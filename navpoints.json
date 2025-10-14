@@ -1,0 +1,48 @@
+[
+    {
+        "floor": "Ground Floor",
+        "points": [
+            {
+                "name": "Stage",
+                "description": "The place where students gather to perform.",
+                "x": 118,
+                "y": 136
+            },
+            {
+                "name": "Gym",
+                "description": "stay healthy.",
+                "x": 375,
+                "y": 168
+            },
+            {
+                "name": "Boiler Room",
+                "description": "creates energy for energy purposes.",
+                "x": 675,
+                "y": 125
+            }
+        ]
+    },
+    {
+        "floor": "First Floor",
+        "points": [
+            {
+                "name": "Central Hall",
+                "description": "A hall roughly in the center of the building.",
+                "x": 1032,
+                "y": 567
+            },
+            {
+                "name": "Classroom 1",
+                "description": "one of the rooms on the first floor.",
+                "x": 790,
+                "y": 860
+            },
+            {
+                "name": "Classroom 2",
+                "description": "one of the rooms on the first floor.",
+                "x": 1246,
+                "y": 860
+            }
+        ]
+    }
+]
