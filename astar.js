@@ -1,6 +1,7 @@
 const gridCache = {};
 
 const pathContainer = document.querySelector(".pathing");
+const distance = document.querySelector(".distance");
 
 async function createGrid(src) {
     const img = new Image();
@@ -42,6 +43,7 @@ async function Astar(grid, start, goal, speed) {
             this.parent = parent;
             this.pos = pos;
             this.initialCost = 0;
+            this.tileCost = 0;
             this.heuristic = 0; 
             this.finalCost = 0; 
         }
@@ -72,7 +74,7 @@ async function Astar(grid, start, goal, speed) {
             let path = [];
             let temp = currentNode;
             while (temp !== null) {
-                path.push([temp.pos.x, temp.pos.y]);
+                path.push([temp.pos.x, temp.pos.y, temp.tileCost]);
                 temp = temp.parent;
             }
             return path.reverse();
@@ -93,8 +95,8 @@ async function Astar(grid, start, goal, speed) {
                     continue;
                 }
 
-                const tileCost = (i !== 0 && j !== 0) ? 1.414 : 1;
-                const cost = currentNode.initialCost + tileCost;
+                currentNode.tileCost = (i !== 0 && j !== 0) ? 1.414 : 1;
+                const cost = currentNode.initialCost + currentNode.tileCost;
                 const existingNode = openSet.find(Point => Point.pos.x === checkX && Point.pos.y === checkY);
 
                 if (!existingNode || cost < existingNode.initialCost) {
@@ -125,15 +127,20 @@ function drawPath(bestPath, speed) {
     }
 
     const ratio = imageElement.clientWidth / imageElement.naturalWidth;
+    let delay = 0
+    let currentdistance = 0;
 
-    bestPath.forEach(async (cell, i) => {
-        await new Promise(r => setTimeout(r, (i + 1) * (15 * (1000 / imageElement.naturalWidth) / speed)))
+    bestPath.forEach(async (cell) => {
+        delay += (5 * cell[2] * (1000 / imageElement.naturalWidth) / speed)
+        await new Promise(r => setTimeout(r, delay))
+        currentdistance += cell[2];
         const cellElement = document.createElement("div");
         cellElement.classList.add("path-cell");
         cellElement.style.width = `${ratio}px`;
         cellElement.style.height = `${ratio}px`;
         cellElement.style.left = `${(cell[0] * ratio)}px`;
         cellElement.style.top = `${(cell[1] * ratio)}px`;
+        distance.innerText = `Distance: ${(currentdistance * ratio / 5).toFixed(2)} meters`;
         pathContainer.appendChild(cellElement);
     });
 }

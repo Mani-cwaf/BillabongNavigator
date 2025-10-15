@@ -6,25 +6,29 @@
                 "name": "Stage",
                 "description": "The place where students gather to perform.",
                 "x": 118,
-                "y": 136
+                "y": 136,
+                "stairs": false
             },
             {
                 "name": "Gym",
                 "description": "stay healthy.",
                 "x": 375,
-                "y": 168
+                "y": 168,
+                "stairs": false
             },
             {
                 "name": "Boiler Room",
                 "description": "creates energy for energy purposes.",
                 "x": 675,
-                "y": 125
+                "y": 125,
+                "stairs": false
             },
             {
-                "name": "Room",
-                "description": "an unnamed room.",
+                "name": "Staircase",
+                "description": "I go up I go down.",
                 "x": 675,
-                "y": 480
+                "y": 480,
+                "stairs": true
             }
         ]
     },
@@ -35,25 +39,29 @@
                 "name": "Central Hall",
                 "description": "A hall roughly in the center of the building.",
                 "x": 1032,
-                "y": 567
+                "y": 567,
+                "stairs": false
             },
             {
                 "name": "Classroom 1",
                 "description": "one of the rooms on the first floor.",
                 "x": 790,
-                "y": 860
+                "y": 860,
+                "stairs": false
             },
             {
                 "name": "Classroom 2",
                 "description": "one of the rooms on the first floor.",
                 "x": 1246,
-                "y": 860
+                "y": 860,
+                "stairs": false
             },
             {
                 "name": "Studio",
                 "description": "The place to record and develop media.",
                 "x": 525,
-                "y": 575
+                "y": 575,
+                "stairs": false
             }
         ]
     }

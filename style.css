@@ -1,6 +1,7 @@
 :root {
     --background-color: rgb(30, 30, 46);
     --accent-color: rgb(225, 200, 57);
+    --accent-glow: rgba(225, 200, 57, 0.6);
     --foreground-color: rgb(123, 118, 135);
 }
 
@@ -67,6 +68,8 @@ body::-webkit-scrollbar {
     margin: 0;
     padding: 0;
     position: absolute;
+    display: flex;
+    flex-direction: column;
     background-color: var(--accent-color);
     border-radius: 100%;
     width: 20px;
@@ -74,8 +77,9 @@ body::-webkit-scrollbar {
     cursor: pointer;
     opacity: 0.7;
     transform-origin: center;
-    z-index: 4;
     transform: translate(-50%, -50%);
+    z-index: 3;
+    box-shadow: 0 0 5px var(--accent-glow), 0 0 10px var(--accent-glow);
 }
 
 .point:hover,
@@ -83,8 +87,8 @@ body::-webkit-scrollbar {
     opacity: 1;
 }
 
-.point:hover .info,
-.point.active .info {
+.point:hover *,
+.point.active * {
     display: flex;
 }
 
@@ -92,27 +96,25 @@ body::-webkit-scrollbar {
     display: none;
     position: relative;
     flex-direction: column;
-    min-width: 8rem;
-    min-height: 2rem;
-    width: fit-content;
-    height: fit-content;
-    left: 1.5rem;
+    width: 8rem;
+    height: max-content;
+    align-self: center;
+    top: 2rem;
 
-    background-color: var(--foreground-color);
+    background-color: rgba(30, 30, 46, 0.8);
     border-radius: 0.25rem;
-    padding: 0.25rem;
+    padding: 0.5rem;
     box-shadow: 0px 0px 5px 5px var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-glow);
     color: var(--accent-color);
-    text-align: center;
 
     pointer-events: none;
     user-select: none;
-    z-index: 5;
+    z-index: 4;
 }
 
 .info h1 {
-    margin: 0;
-    margin-bottom: 0.25rem;
+    margin: 0 0 0.25rem 0;
     padding: 0;
     font-size: 1rem;
 }
@@ -120,16 +122,15 @@ body::-webkit-scrollbar {
 .info p {
     margin: 0;
     padding: 0;
+    width: 100%;
     font-size: 0.75rem;
 }
 
 .nav-controls {
     width: 100%;
     height: calc(100% - 3rem);
-
     position: absolute;
     display: flex;
-
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -149,20 +150,22 @@ body::-webkit-scrollbar {
 }
 
 .nav-controls h1 {
+    background: rgba(0, 0, 0, 0.2);
     box-shadow: 0px 0px 5px 2px var(--foreground-color);
-    background: rgba(0,0,0,0.2);
     padding: 0.25rem;
+    text-shadow: 0 0 5px var(--accent-glow);
     border-radius: 0.25rem;
     font-size: 2rem;
-    z-index: 3;
+    z-index: 2;
 }
 
 .controls {
-    width: calc(100% - 2rem);
-    display: flex;
+    width: 8rem;
+    display: none;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0;
+    margin-top: 0.5rem;
 }
 
 .controls button {
@@ -170,14 +173,15 @@ body::-webkit-scrollbar {
     border: none;
     border-radius: 0.5rem;
     color: var(--foreground-color);
-    font-size: 3rem;
-    width: 4rem;
-    height: 4rem;
+    font-size: 2rem;
+    width: fit-content;
+    height: fit-content;
     cursor: pointer;
+    opacity: 0.9;
     box-shadow: 0px 0px 5px 2px var(--foreground-color);
     transition: background-color 0.3s, transform 0.1s;
-    opacity: 0.9;
-    z-index: 1;
+    pointer-events: all;
+    z-index: 5;
 }
 
 .controls button:hover {
@@ -188,20 +192,20 @@ body::-webkit-scrollbar {
     opacity: 1;
 }
 
+
 .pathing {
     position: absolute;
-
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 1;
 }
 
 .pathing * {
     position: absolute;
-    background-color: var(--accent-color);
+    background-color: var(--accent-glow);
     width: 1px;
     height: 1px;
-    box-shadow: 0px 0px 0.5px 1px var(--accent-color);
+    box-shadow: 0px 0px 0.5px 1px var(--accent-glow);
     transform: translate(-50%, -50%);
 }
 
@@ -211,4 +215,16 @@ body::-webkit-scrollbar {
     background-color: var(--foreground-color);
     box-shadow: 0px 0px 1px 2px var(--foreground-color);
     border-radius: 100%;
+}
+
+.distance {
+    position: absolute;
+    left: 1.5rem;
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 5px 2px var(--foreground-color);
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    z-index: 1;
+    text-shadow: 0 0 5px var(--accent-glow);
 }

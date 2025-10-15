@@ -84,7 +84,7 @@ document.onkeydown = (e) => {
         speed = Math.min(10, Math.max(0.5, speed * 1.25));
     }
     else if (e.key == "ArrowDown") {
-        speed = Math.min(10, Math.max(0.5, speed * (1/1.25)));
+        speed = Math.min(10, Math.max(0.5, speed * (1 / 1.25)));
     }
 };
 document.onwheel = (e) => {
@@ -108,7 +108,7 @@ const updateZoom = () => {
 }
 
 let ratio;
-const createpoint = (x, y, name, description) => {
+const createpoint = (x, y, name, description, stairs) => {
     const point = document.createElement('div');
     point.classList.add("point");
     point.style.top = `${y * ratio - 10}px`;
@@ -117,9 +117,38 @@ const createpoint = (x, y, name, description) => {
 
     const info = document.createElement('div');
     info.classList.add("info");
-    info.innerHTML = `<h1>${name}</h1> <p>${description}<p>`;
-
+    info.innerHTML = `<h1>${name}</h1> <p>${description}</p>`;
     point.appendChild(info);
+
+    if (stairs) {
+        const controls = document.createElement("div");
+        controls.classList.add("controls");
+
+        const floordown = document.createElement("button");
+        floordown.classList.add("floor-down");
+        floordown.innerHTML = "<"
+        floordown.onmousedown = () => {
+            if (floor > 0) {
+                floor -= 1;
+                changefloor();
+            }
+        };
+        controls.appendChild(floordown);
+
+        const floorup = document.createElement("button");
+        floorup.innerHTML = ">"
+        floorup.classList.add("floor-up");
+        floorup.onmousedown = () => {
+            if (floor < (navpoints.length - 1)) {
+                floor += 1;
+                changefloor();
+            }
+        };
+        controls.appendChild(floorup);
+        
+        info.appendChild(controls);
+    }
+
     point.onclick = () => {
         point.classList.contains("active") ? point.classList.remove("active") : point.classList.add("active")
         selectPoint(x, y)
@@ -134,6 +163,8 @@ const changefloor = () => {
     pointsContainer.innerHTML = "";
     pathing.innerHTML = "";
     currentfloor.innerText = navpoints[floor].floor;
+    selectedPoints.start = null;
+    selectedPoints.end = null;
     image.src = `floors/floor${floor}.jpg`
     zoom = 1;
     updateZoom();
@@ -143,19 +174,7 @@ const changefloor = () => {
         overlay.style.width = imageBounds.width + "px";
         overlay.style.height = imageBounds.height + "px";
         navpoints[floor]["points"].forEach(navpoint => {
-            createpoint(navpoint.x, navpoint.y, navpoint.name, navpoint.description);
+            createpoint(navpoint.x, navpoint.y, navpoint.name, navpoint.description, navpoint.stairs);
         });
     }, 100);
-};
-floorup.onmousedown = () => {
-    if (floor < (navpoints.length - 1)) {
-        floor += 1;
-        changefloor();
-    }
-};
-floordown.onmousedown = () => {
-    if (floor > 0) {
-        floor -= 1;
-        changefloor();
-    }
 };
