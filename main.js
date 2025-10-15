@@ -1,6 +1,6 @@
 const map = document.querySelector('.map');
 const image = document.querySelector('img');
-const points = document.querySelector('.points');
+const pointsContainer = document.querySelector('.points');
 const pathing = document.querySelector('.pathing');
 const floorup = document.querySelector('.floor-up');
 const floordown = document.querySelector('.floor-down');
@@ -27,19 +27,25 @@ let selectedPoints = {
     end: null
 }
 
+let speed = 1;
+
 const selectPoint = (x, y) => {
     if (selectedPoints.start == null) {
         selectedPoints.start = [x, y];
-    } else if (selectedPoints.end == null) {
+    } else if (JSON.stringify(selectedPoints.start) == JSON.stringify([x, y])) {
+        selectedPoints.start = null;
+    } else if (selectedPoints.end == null && (JSON.stringify(selectedPoints.start) != JSON.stringify([x, y]))) {
         selectedPoints.end = [x, y];
         import("./astar.js").then((module) => {
-            module.createPath(floor, selectedPoints.start, selectedPoints.end);
+            const points = [...pointsContainer.children];
+            points.forEach(point => point.classList.remove("active"));
+            module.createPath(floor, selectedPoints.start, selectedPoints.end, speed);
+            selectedPoints.start = null;
+            selectedPoints.end = null;
         })
     } else {
-        selectedPoints.start = [x, y];
         selectedPoints.end = null;
     }
-    console.log(selectedPoints)
 }
 
 let held = false;
@@ -71,13 +77,21 @@ body.addEventListener("mousemove", (e) => {
 
 zoom = 1;
 
-body.onkeydown = (e) => {
+document.onkeydown = (e) => {
     held = false;
 
     if (e.key == "ArrowUp") {
-        zoom = zoom * (1.2);
+        speed = Math.min(10, Math.max(0.5, speed * 1.25));
     }
     else if (e.key == "ArrowDown") {
+        speed = Math.min(10, Math.max(0.5, speed * (1/1.25)));
+    }
+};
+document.onwheel = (e) => {
+    if (e.deltaY < 0) {
+        zoom = zoom * (1.2);
+
+    } else if (e.deltaY > 0) {
         zoom = zoom * (1 / 1.2);
     }
     updateZoom();
@@ -89,7 +103,8 @@ const updateZoom = () => {
         currentmovement.y = 0;
     }
     map.style.transform = `translate(${-currentmovement.x}px, ${-currentmovement.y}px) scale(${zoom})`;
-    [...points.children].forEach(child => child.style.transform = `scale(${(1 / zoom)})`);
+    const points = [...pointsContainer.children];
+    points.forEach(child => child.style.transform = `scale(${(1 / zoom)})`);
 }
 
 let ratio;
@@ -102,35 +117,31 @@ const createpoint = (x, y, name, description) => {
 
     const info = document.createElement('div');
     info.classList.add("info");
-    info.style.display = "none";
     info.innerHTML = `<h1>${name}</h1> <p>${description}<p>`;
 
     point.appendChild(info);
-    point.onmouseover = () => info.style.display = "flex";
-    point.onmouseleave = () => info.style.display = "none";
     point.onclick = () => {
+        point.classList.contains("active") ? point.classList.remove("active") : point.classList.add("active")
         selectPoint(x, y)
     }
-    points.appendChild(point);
+    pointsContainer.appendChild(point);
 };
 
 let navpoints;
 fetch('navpoints.json').then(response => response.json()).then(data => { navpoints = data }).then(() => { changefloor() });
 
 const changefloor = () => {
-    points.innerHTML = "";
+    pointsContainer.innerHTML = "";
     pathing.innerHTML = "";
     currentfloor.innerText = navpoints[floor].floor;
     image.src = `floors/floor${floor}.jpg`
-
+    zoom = 1;
+    updateZoom();
     setTimeout(() => {
         const imageBounds = image.getBoundingClientRect();
         ratio = imageBounds.width / image.naturalWidth
-        console.log(imageBounds.width)
         overlay.style.width = imageBounds.width + "px";
         overlay.style.height = imageBounds.height + "px";
-        zoom = 1;
-        updateZoom();
         navpoints[floor]["points"].forEach(navpoint => {
             createpoint(navpoint.x, navpoint.y, navpoint.name, navpoint.description);
         });

@@ -1,7 +1,7 @@
 :root {
-    --background-color: rgb(205, 160, 24);
-    --foreground-color: rgb(253, 194, 21);
-    --accent-color: rgb(98, 63, 153);
+    --background-color: rgb(30, 30, 46);
+    --accent-color: rgb(225, 200, 57);
+    --foreground-color: rgb(123, 118, 135);
 }
 
 html {
@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    background: linear-gradient(var(--foreground-color), var(--background-color), var(--foreground-color));
+    background: var(--background-color);
     width: 100%;
     height: 100%;
     display: flex;
@@ -75,41 +75,52 @@ body::-webkit-scrollbar {
     opacity: 0.7;
     transform-origin: center;
     z-index: 4;
+    transform: translate(-50%, -50%);
 }
 
-.point:hover {
+.point:hover,
+.point.active {
     opacity: 1;
 }
 
+.point:hover .info,
+.point.active .info {
+    display: flex;
+}
+
 .info {
+    display: none;
     position: relative;
     flex-direction: column;
-    min-width: 12rem;
-    min-height: 5rem;
+    min-width: 8rem;
+    min-height: 2rem;
     width: fit-content;
     height: fit-content;
     left: 1.5rem;
 
     background-color: var(--foreground-color);
-    border-radius: 1rem;
-    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
     box-shadow: 0px 0px 5px 5px var(--accent-color);
+    color: var(--accent-color);
+    text-align: center;
 
     pointer-events: none;
     user-select: none;
+    z-index: 5;
 }
 
 .info h1 {
     margin: 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     padding: 0;
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
 .info p {
     margin: 0;
     padding: 0;
-    font-size: 1rem;
+    font-size: 0.75rem;
 }
 
 .nav-controls {
@@ -134,10 +145,15 @@ body::-webkit-scrollbar {
     margin: 0;
     padding: 0;
     pointer-events: auto;
+    font-family: "Rubik";
 }
 
 .nav-controls h1 {
-    font-size: 3rem;
+    box-shadow: 0px 0px 5px 2px var(--foreground-color);
+    background: rgba(0,0,0,0.2);
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 2rem;
     z-index: 3;
 }
 
@@ -154,15 +170,16 @@ body::-webkit-scrollbar {
     border: none;
     border-radius: 0.5rem;
     color: var(--foreground-color);
-    font-size: 4rem;
-    width: 6rem;
-    height: 6rem;
+    font-size: 3rem;
+    width: 4rem;
+    height: 4rem;
     cursor: pointer;
     box-shadow: 0px 0px 5px 2px var(--foreground-color);
     transition: background-color 0.3s, transform 0.1s;
     opacity: 0.9;
     z-index: 1;
 }
+
 .controls button:hover {
     transform: scale(1.1);
 }
@@ -176,7 +193,7 @@ body::-webkit-scrollbar {
 
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
 }
 
 .pathing * {
@@ -184,5 +201,14 @@ body::-webkit-scrollbar {
     background-color: var(--accent-color);
     width: 1px;
     height: 1px;
-    box-shadow: 0px 0px 1px 1px var(--accent-color);
+    box-shadow: 0px 0px 0.5px 1px var(--accent-color);
+    transform: translate(-50%, -50%);
+}
+
+.pathing *:last-child {
+    width: 2px !important;
+    height: 2px !important;
+    background-color: var(--foreground-color);
+    box-shadow: 0px 0px 1px 2px var(--foreground-color);
+    border-radius: 100%;
 }

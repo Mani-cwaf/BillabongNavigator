@@ -19,6 +19,12 @@
                 "description": "creates energy for energy purposes.",
                 "x": 675,
                 "y": 125
+            },
+            {
+                "name": "Room",
+                "description": "an unnamed room.",
+                "x": 675,
+                "y": 480
             }
         ]
     },
@@ -42,6 +48,12 @@
                 "description": "one of the rooms on the first floor.",
                 "x": 1246,
                 "y": 860
+            },
+            {
+                "name": "Studio",
+                "description": "The place to record and develop media.",
+                "x": 525,
+                "y": 575
             }
         ]
     }
